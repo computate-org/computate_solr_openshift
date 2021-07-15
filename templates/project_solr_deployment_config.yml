@@ -1,0 +1,107 @@
+---
+# Label: ansible_project_solr_deployment_config
+# Title: create the Ansible template for the Apache Solr deployment config in OpenShift
+# Mission: create the Ansible template for the Apache Solr deployment config in OpenShift
+# Milestone: Automate Search Engine Deployment
+# Column: Automate Search Engine Deployment
+
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    app: solr
+    deploymentConfig: solr
+    deploymentconfig: solr
+  strategy:
+    activeDeadlineSeconds: 21600
+    recreateParams:
+      timeoutSeconds: 600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        app: solr
+        application: solr
+        deploymentConfig: solr
+        deploymentconfig: solr
+      name: solr
+    spec:
+      containers:
+        - env:
+            - name: ZK_HOST
+              value: {{ZOOKEEPER_HOST_NAME}}
+            - name: SOLR_INCLUDE
+              value: /usr/share/solr/solr.in.sh
+            - name: SOLR_HOST
+              value: {{ SOLR_HOST_NAME }}
+          imagePullPolicy: Always
+          name: solr
+          ports:
+            - containerPort: {{SOLR_PORT}}
+              name: solr-port
+              protocol: TCP
+          resources:
+            limits:
+              memory: 1Gi
+          securityContext:
+            privileged: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/solr
+              name: solr-data-volume
+            - mountPath: "{{SOLR_OPT}}/server/solr/configsets/computate/conf"
+              name: solr-configset
+{% if ENABLE_SOLR_SSL %}
+            - mountPath: "{{SOLR_OPT}}/keystore"
+              name: solr-keystore
+            - mountPath: "/usr/share/solr"
+              name: solr-bin-secret
+{% endif %}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: solr-data-volume
+          persistentVolumeClaim:
+            claimName: solr-persistent-volume-claim
+        - name: solr-configset
+          configMap:
+            defaultMode: 440
+            name: solr-configset
+{% if ENABLE_SOLR_SSL %}
+        - name: solr-keystore
+          secret:
+            defaultMode: 440
+            secretName: solr-keystore
+        - name: solr-bin-secret
+          secret:
+            defaultMode: 0777
+            secretName: solr-bin-secret
+{% endif %}
+  test: false
+  triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - solr
+        from:
+          kind: ImageStreamTag
+          name: 'solr-image-stream:{{ SOLR_VERSION }}'
+          namespace: {{SOLR_NAMESPACE}}
+      type: ImageChange
+    - type: ConfigChange
