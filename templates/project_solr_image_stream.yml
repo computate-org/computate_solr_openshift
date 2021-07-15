@@ -14,7 +14,7 @@ spec:
     - annotations: null
       from:
         kind: DockerImage
-        name: solr
+        name: solr:{{ SOLR_VERSION }}
       generation: 1
       importPolicy: {}
       name: {{ SOLR_VERSION }}
