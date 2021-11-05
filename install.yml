@@ -1,0 +1,7 @@
+---
+- name: Install solr to OpenShift
+  connection: local
+  hosts: localhost
+  roles:
+    - computate.computate_solr_openshift
+
