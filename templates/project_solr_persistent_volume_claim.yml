@@ -13,4 +13,4 @@ spec:
   resources:
     requests:
       storage: {{SOLR_VOLUME_SIZE}}
-  storageClassName: "{{ REDHAT_OPENSHIFT_STORAGE_CLASS_NAME }}"
+  storageClassName: "{{ SOLR_STORAGE_CLASS_NAME }}"
