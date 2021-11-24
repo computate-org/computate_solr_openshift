@@ -12,5 +12,5 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: {{SOLR_VOLUME_SIZE}}
+      storage: {{ SOLR_VOLUME_SIZE }}
   storageClassName: "{{ SOLR_STORAGE_CLASS_NAME }}"
