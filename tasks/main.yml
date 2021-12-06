@@ -2,7 +2,7 @@
 # tasks file for computate.computate_solr_openshift
 
 - name: Upload solr configset configmap
-  shell: "oc login {{SOLR_HOST}} --token={{SOLR_TOKEN}} && oc create configmap solr-configset --from-file=/usr/local/src/computate/config/solr/server/solr/configsets/computate/conf/ --dry-run -o yaml -n {{ SOLR_NAMESPACE }} | oc apply -n {{ SOLR_NAMESPACE }} -f -"
+  shell: "oc login {{SOLR_HOST}} --token={{SOLR_TOKEN}} && oc create configmap solr-configset --from-file={{ lookup('env', 'HOME') }}/.local/src/computate/config/solr/server/solr/configsets/computate/conf/ --dry-run -o yaml -n {{ SOLR_NAMESPACE }} | oc apply -n {{ SOLR_NAMESPACE }} -f -"
   ignore_errors: true
 
 - name: Install solr keystore
