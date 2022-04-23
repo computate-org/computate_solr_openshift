@@ -10,6 +10,14 @@ REDHAT_OPENSHIFT_HOST: https://api.rh-us-east-1.openshift.com
 REDHAT_OPENSHIFT_TOKEN: "..."
 # The OpenShift namespace where applications will be deployed.
 REDHAT_OPENSHIFT_NAMESPACE: "rh-impact"
+# Solr memory limit. 
+SOLR_LIMITS_MEMORY: "500Mi"
+# Solr cpu limit. 
+SOLR_LIMITS_CPU: "500m"
+# Solr memory requests. 
+SOLR_REQUESTS_MEMORY: "200Mi"
+# Solr cpu requests. 
+SOLR_REQUESTS_CPU: "100m"
 
 #################
 # Solr defaults #
