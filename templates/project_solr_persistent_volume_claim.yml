@@ -13,4 +13,6 @@ spec:
   resources:
     requests:
       storage: {{ SOLR_VOLUME_SIZE }}
+{% if SOLR_STORAGE_CLASS_NAME is defined %}
   storageClassName: "{{ SOLR_STORAGE_CLASS_NAME }}"
+{% endif %}

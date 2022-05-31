@@ -29,8 +29,6 @@ SOLR_OPT: /opt/solr
 SOLR_VERSION: 8.8.1
 # The size of the solr data volume. 
 SOLR_VOLUME_SIZE: 1Gi
-# The OpenShift storage class for the solr persistent volume claim. 
-SOLR_STORAGE_CLASS_NAME: gp2
 # The default port that Solr runs.
 SOLR_PORT: 8983
 # The Solr OpenShift base URL where Solr will be deployed.
