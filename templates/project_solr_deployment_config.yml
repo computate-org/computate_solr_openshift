@@ -46,6 +46,8 @@ spec:
               value: /usr/share/solr/solr.in.sh
             - name: SOLR_HOST
               value: {{ SOLR_HOST_NAME }}
+            - name: OOM
+              value: exit
           imagePullPolicy: Always
           name: solr
           ports:
